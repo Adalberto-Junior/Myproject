@@ -1,0 +1,57 @@
+import speech_recognition as sr
+import pyttsx3
+
+# Inicialização do reconhecimento de fala
+r = sr.Recognizer()
+
+# Inicialização da síntese de fala
+engine = pyttsx3.init()
+
+# Função para falar a resposta
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+
+# Função para ouvir o comando de voz
+def listen():
+    with sr.Microphone() as source:
+        print("Ouvindo...")
+        audio = r.listen(source)
+        try:
+            text = r.recognize_google(audio, language="pt-BR")
+            print(f"Você disse: {text}")
+            return text.lower()
+        except sr.UnknownValueError:
+            print("Desculpe, não entendi.")
+        except sr.RequestError as e:
+            print(f"Erro ao fazer a solicitação ao serviço de reconhecimento de fala: {e}")
+    return ""
+
+# Função para processar o comando
+def process_command(command):
+    if "olá" in command:
+        speak("Olá! Como posso ajudar você?")
+    elif "como você está" in command:
+        speak("Estou bem, obrigado por perguntar!")
+    elif "hora" in command:
+        # Lógica para obter a hora atual
+        pass
+    elif "clima" in command:
+        # Lógica para obter a previsão do tempo
+        pass
+    elif "toca uma música" in command:
+        # Lógica para reproduzir música
+        pass
+    elif "abra o navegador" in command:
+        # Lógica para abrir o navegador
+        pass
+    elif "sair" in command:
+        speak("Até mais!")
+        exit()
+    else:
+        speak("Desculpe, não entendi o comando.")
+
+# Loop principal do assistente
+while True:
+    command = listen()
+    process_command(command)
